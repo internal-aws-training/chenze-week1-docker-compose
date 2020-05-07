@@ -2,7 +2,15 @@ version: '3'
 
 services:
   nginx:
-    image: nginx:
+    image: nginx:1.15.12
+    hostname: reverse
+    ports:
+      - 4545:4545
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - frontend
+
   database:
     image: postgres:11.5
     ports:
@@ -11,13 +19,13 @@ services:
       POSTGRES_PASSWORD: xxxxxx
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - /Volumes/Life/Learning/codingNLearning/postgres:/var/lib/postgresql/data/pgdata
+      - db-cache:/var/lib/postgresql/data/pgdata
     networks:
       - backend
-
+      
   backend:
     build:
-      context: .
+      context: ./dockerDemo
       dockerfile: Dockerfile
     restart: always
     ports:
@@ -29,7 +37,7 @@ services:
 
   frontend:
     build:
-      context: /Volumes/Life/Learning/codingNLearning/au-asw/asw-docker/react-app-01
+      context: ./react-app-01
       dockerfile: Dockerfile-frontend
     ports:
       - 1500:3000
@@ -39,3 +47,5 @@ services:
 networks:
   backend:
   frontend:
+volumes: 
+  db-cache:
