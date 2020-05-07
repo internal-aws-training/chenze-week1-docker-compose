@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: postgres
+    password: xxxxxx
+    url: jdbc:postgresql://172.17.0.1:5432/postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect  #设置方言
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true #防止postgresql数据库因未实现CLOB格式而造成的数据检查出错
+    database: POSTGRESQL
+    show-sql: true
+    hibernate.ddl-auto: update
+  jackson:
+    serialization:
+      indent_output: true
+#  flyway:
+#    locations: ["classpath:/db/migration"]
